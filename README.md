@@ -1,1 +1,1 @@
-please gpay me 100/- for this effort
+please gpay me 100/- for my effort
