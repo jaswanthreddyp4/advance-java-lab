@@ -72,7 +72,7 @@ public class Program6 implements ActionListener {
         jf.add(jbtn);
 
         jf.setSize(500, 500);
-        jf.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jf.setLayout(new GridLayout(0, 2));
 
         jf.setVisible(true);
 
