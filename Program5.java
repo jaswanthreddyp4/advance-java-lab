@@ -1,75 +1,164 @@
-package javaSwing;
+import java.awt.*;
+
+import java.awt.event.ActionEvent;
+
+import java.awt.event.ActionListener;
+
+import java.util.*;
 
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.Map;
 
-public class RetailSystem {
+class Product {
 
-	private static Map<String, String> users = new HashMap<>();
-	private static Map<String, String> customers = new HashMap<>();
-	private static Map<String, String> items = new HashMap<>();
+	String name;
+	float price;
 
-	static {
-		// Sample users for login validation
-		users.put("jaswanth", "stu123");
-		users.put("swatantra", "stu999");
+	Product(String name, float price) {
+		this.name = name;
+		this.price = price;
+	}
+}
 
-		// Sample items (itemID, itemName)
-		items.put("1", "punugulu");
-		items.put("2", "rava dosa");
+public class Program5 implements ActionListener {
 
-		// Sample customers (mobileNumber, customerID)
-		customers.put("9490136745", "C001");
-		customers.put("8309455634", "C002");
+	static HashMap<Integer, String> cust = new HashMap<>();
+
+	static HashMap<Integer, Product> produ = new HashMap<>();
+
+	static int id = 2;
+
+	JFrame jf = new JFrame("Title");
+
+	JLabel jl1 = new JLabel("Phone Number");
+	JTextField jt1 = new JTextField("", 10);
+
+	JButton jb1 = new JButton("Submit");
+
+	JLabel jl2 = new JLabel("Select Products:");
+	String[] Products = { "1-Brush", "2-Paste" };
+	JComboBox jcb1 = new JComboBox<>(Products);
+
+	JLabel jl3 = new JLabel("Quantity");
+	JTextField jt2 = new JTextField("", 10);
+
+	JButton jb2 = new JButton("Select");
+
+	JLabel jl4 = new JLabel("Select Discount:");
+	Integer[] disc = { 5, 10 };
+	JComboBox jcb2 = new JComboBox<>(disc);
+
+	JButton jb3 = new JButton("Apply");
+
+	float cost = 0;
+
+	String prod;
+
+	Program5() {
+
+		jf.add(jl1);
+
+		jf.add(jt1);
+
+		jf.add(jb1);
+
+		jf.add(jl2);
+
+		jf.add(jcb1);
+
+		jf.add(jl3);
+
+		jf.add(jt2);
+
+		jf.add(jb2);
+
+		jf.add(jl4);
+
+		jf.add(jcb2);
+
+		jf.add(jb3);
+
+		jf.setSize(500, 300);
+
+		jf.setLayout(new GridLayout(0, 3));
+
+		jf.setVisible(true);
+
+		jb1.addActionListener(this);
+
+		jb2.addActionListener(this);
+
+		jb3.addActionListener(this);
+
 	}
 
 	public static void main(String[] args) {
-		// Login Dialog
-		String username = JOptionPane.showInputDialog("Enter Username:");
-		String password = JOptionPane.showInputDialog("Enter Password:");
 
-		if (validateLogin(username, password)) {
-			processCustomerDetails();
-		} else {
-			JOptionPane.showMessageDialog(null, "Invalid Login Credentials");
-		}
+		Product p1 = new Product("1-Brush", 50);
+
+		Product p2 = new Product("2-Paste", 50);
+
+		produ.put(1, p1);
+
+		produ.put(2, p2);
+
+		cust.put(1, "8660676432");
+
+		cust.put(2, "9353620448");
+
+		new Program5();
+
 	}
 
-	private static boolean validateLogin(String username, String password) {
-		return users.containsKey(username) && users.get(username).equals(password);
-	}
+	@Override
 
-	private static void processCustomerDetails() {
-		String customerId = JOptionPane.showInputDialog("Enter Customer ID or Mobile Number:");
-		if (!customers.containsKey(customerId)) {
-			JOptionPane.showMessageDialog(null, "New Customer. Adding to system.");
-			customers.put(customerId, "C" + (customers.size() + 1));
+	public void actionPerformed(ActionEvent e) {
+
+		// TODO Auto-generated method stub
+
+		if (e.getSource() == jb1) {
+
+			String phno = jt1.getText();
+
+			if (cust.containsValue(phno)) {
+
+				JOptionPane.showMessageDialog(jf, "Welcome " + phno);
+
+			} else {
+
+				cust.put(id++, phno);
+
+				JOptionPane.showMessageDialog(jb1, "Your number added Happy Shopping");
+
+			}
+
 		}
 
-		String itemId = JOptionPane.showInputDialog("Enter Item ID:");
-		String quantityStr = JOptionPane.showInputDialog("Enter Quantity:");
-		int quantity = Integer.parseInt(quantityStr);
+		if (e.getSource() == jb2) {
 
-		if (items.containsKey(itemId)) {
-			String itemName = items.get(itemId);
-			int totalCost = calculateCost(itemId, quantity); // Implement this method based on your pricing logic
+			Integer qty = Integer.parseInt(jt2.getText());
 
-			JOptionPane.showMessageDialog(null, "Item: " + itemName + "\nTotal Cost: " + totalCost);
+			prod = (String) jcb1.getSelectedItem();
 
-			String[] discounts = { "Discount 1", "Discount 2", "Discount 3" };
-			int discountType = JOptionPane.showOptionDialog(null, "Select a discount type", "Discount",
-					JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, discounts, discounts[0]);
+			for (Map.Entry<Integer, Product> m : produ.entrySet()) {
 
-			JOptionPane.showMessageDialog(null, "Print Receipt\nCustomer ID: " + customerId + "\nItem: " + itemName
-					+ "\nTotal Cost: " + totalCost + "\nDiscount: " + discounts[discountType]);
-		} else {
-			JOptionPane.showMessageDialog(null, "Invalid Item ID");
+				if (prod.equals(m.getValue().name)) {
+
+					cost = qty * m.getValue().price;
+				}
+			}
+			JOptionPane.showMessageDialog(jf, "Prod:" + prod + "\nTotal Cost:" + cost);
 		}
-	}
 
-	private static int calculateCost(String itemId, int quantity) {
-		// Sample pricing logic
-		return 100 * quantity; // Assuming each item costs 100
+		if (e.getSource() == jb3) {
+
+			Integer disc = (Integer) jcb2.getSelectedItem();
+
+			float discount = 100 - disc;
+
+			float finalp = (discount * cost) / 100;
+
+			JOptionPane.showMessageDialog(jf, "After Discount:\n" + "Prod:" + prod + "\nTotal Cost:" + finalp);
+
+		}
 	}
 }
