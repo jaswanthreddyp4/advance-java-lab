@@ -158,7 +158,7 @@ public class Program8 implements ActionListener {
 		if (e.getSource() == jbtn3) {
 
 			Connection conn = null;
-			Statement stmnt = null;
+			PreparedStatement stmnt = null;
 			ResultSet rs = null;
 
 			String dburl = "jdbc:mysql://localhost:3306/java";
@@ -168,20 +168,22 @@ public class Program8 implements ActionListener {
 			try {
 				conn = DriverManager.getConnection(dburl, userName, password);
 
-				stmnt=conn.createStatement();
-				String query = "select c.cust_name,r.rep_name from customer c JOIN rep r ON c.state=r.state";
-				rs = stmnt.executeQuery(query);
+				stmnt=conn.prepareStatement("select c.cust_name , r.rep_name , c.state from customer c join rep r on c.state=r.state");
+				rs=stmnt.executeQuery();
 
 				StringBuilder sb = new StringBuilder();
 				while (rs.next()) {
 					sb.append("repository name: " + rs.getString(1) + "\n");
 					sb.append("customer name : " + rs.getString(2) + "\n");
+					sb.append("state : " + rs.getString(3) + "\n");
+					
 				}
 				
 				JOptionPane.showMessageDialog(jf,sb.toString());
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+
 
 		}
 	}
