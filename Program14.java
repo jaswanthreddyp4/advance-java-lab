@@ -1,11 +1,11 @@
 // sql file
-CREATE TABLE tshirt (
+CREATE TABLE tshirts(
     id INT AUTO_INCREMENT PRIMARY KEY,
     accessories VARCHAR(255),
     tagline VARCHAR(255),
     chestpocket VARCHAR(255),
     color VARCHAR(255)
-);
+)AUTO_INCREMENT=100;
 
 
 // input jsp file
